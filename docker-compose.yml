@@ -1,0 +1,32 @@
+version: '3'
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql:
+    driver: local
+  postgres:
+    driver: local
+
+services:
+  app:
+    build: .
+    environment:
+      PORT: 3000
+    ports:
+      - "3000:3000"
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: postgres
+    volumes:
+      - ~/.ccxc/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
